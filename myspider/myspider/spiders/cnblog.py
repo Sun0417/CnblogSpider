@@ -71,6 +71,7 @@ class CnblogSpider(scrapy.Spider):
             yield Request(url=post_url,
                           meta={'cn_blog_item':cn_blog_item},
                           callback=self.parse_nums)
+            
         pass
 
     '''
