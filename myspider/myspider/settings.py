@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+import sys
 
 # Scrapy settings for myspider project
 #
@@ -18,8 +20,8 @@ NEWSPIDER_MODULE = 'myspider.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'myspider (+http://www.yourdomain.com)'
 
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+# Obey robots.txt rules 默认的robosts协议的 需要关闭
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -65,6 +67,10 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+   'myspider.pipelines.CnBlogImagePipeline': 1, #开启下载图片配置
+   'myspider.pipelines.JsonWithEncodePipeline': 4, #开启文件写入
+   'myspider.pipelines.JsonExportPipeline': 3, #sprapy内置开启文件写入
+   'myspider.pipelines.MysqlTwistedPipeline': 2, #异步数据保存数据库
    'myspider.pipelines.MyspiderPipeline': 300,
 }
 
@@ -88,3 +94,16 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# 对应item的key值
+IMAGES_URLS_FIELD = 'front_img_url'
+# 设置图片的保存路径
+project_dir = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(project_dir,'images')
+IMAGES_STORE = image_path
+
+MYSQL_HOST = '127.0.0.1'
+MYSQL_DBNAME = 'test'
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = '123456'
+CHAR_SET = 'utf8'
