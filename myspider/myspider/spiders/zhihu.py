@@ -57,7 +57,7 @@ class ZhihuSpider(scrapy.Spider):
         #     .send_keys('13764882106')
         # # 密码
         # browser.find_element_by_css_selector('.SignFlow-password input')\
-        #     .send_keys('840417sjy')
+        #     .send_keys('******')
         # # 模拟点击登录
         # move(944,577)
         # click()
