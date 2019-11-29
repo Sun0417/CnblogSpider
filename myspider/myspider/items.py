@@ -42,9 +42,7 @@ class CnBlogSpiderItem(scrapy.Item):
         output_processor=Join(separator=',')
     )
     url = scrapy.Field()
-    url_object_id = scrapy.Field(
-        input_processor = MapCompose(common.get_md5)
-    )
+    url_object_id = scrapy.Field()
     front_img_url = scrapy.Field(
         output_processor=Identity(),
     )

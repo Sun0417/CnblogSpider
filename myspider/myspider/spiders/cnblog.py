@@ -54,9 +54,9 @@ class CnblogSpider(scrapy.Spider):
             item_loads.add_css('source', '#come_from a::text')
             item_loads.add_xpath('create_at', '//div[@id="news_info"]//*[@class="time"]/text()')
             item_loads.add_xpath('tags', '//div[@id="news_more_info"]/div[1]/a/text()')
-            item_loads.add_value('front_img_url', response.meta.get('front_img_url', ''))
+            if response.meta.get('front_img_url', []):
+               item_loads.add_value('front_img_url', response.meta.get('front_img_url', []))
             item_loads.add_value('url', response.url)
-            item_loads.add_value('url_object_id', response.url)
             content_id = match_re.group(1)
 
             # 点赞数
@@ -64,7 +64,7 @@ class CnblogSpider(scrapy.Spider):
                                      '/NewsAjax/GetAjaxNewsInfo?contentId={}'
                                      .format(content_id))
             yield Request(url=post_url,
-                          meta={'blog_item_load':item_loads},
+                          meta={'blog_item_load':item_loads,'url':response.url},
                           callback=self.parse_nums)
 
     '''
@@ -73,12 +73,15 @@ class CnblogSpider(scrapy.Spider):
     def parse_nums(self, response):
 
         blog_item_load = response.meta.get('blog_item_load','')
+        url = response.meta.get('url', '')
         re = json.loads(response.text)
 
         comment_count = re['CommentCount']
         total_view = re['TotalView']
         digg_count = re['DiggCount']
 
+        url_object_id = common.get_md5(url)
+        blog_item_load.add_value('url_object_id', url_object_id)
         blog_item_load.add_value('comment_count',comment_count)
         blog_item_load.add_value('total_view',total_view)
         blog_item_load.add_value('digg_count', digg_count)
