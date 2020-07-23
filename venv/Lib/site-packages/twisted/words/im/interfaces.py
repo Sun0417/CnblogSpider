@@ -14,7 +14,7 @@ from zope.interface import Interface, Attribute
 # Persons have Conversation components
 # Groups have GroupConversation components
 # Persons and Groups are associated with specific Accounts
-# At run-time, Clients/Accounts are slaved to a User Interface
+# At run-time, Clients/Accounts are subordinated to a User Interface
 #   (Note: User may be a bot, so don't assume all UIs are built on gui toolkits)
 
 
